@@ -2,34 +2,54 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
+import java.util.HashSet;
 
 public class HangmanGUI extends JFrame {
-    private final String word = "İYİYİM"; // Tahmin edilmesi gereken kelime
-    private final char[] guessedWord = new char[word.length()];
+    private final String word;
+    private final char[] guessedWord;
     private final Set<Character> guessedLetters = new HashSet<>();
-    private int attemptsLeft = 7; // Başlangıçtaki tahmin hakkı
+    private int attemptsLeft;
     private final String[] hangmanStages = {
             "  +---+\n      |\n      |\n      |\n     ===",
-            "  +---+\n  O   |\n      |\n      |\n     ===",
-            "  +---+\n  O   |\n  |   |\n      |\n     ===",
-            "  +---+\n  O   |\n /|   |\n      |\n     ===",
-            "  +---+\n  O   |\n /|\\  |\n      |\n     ===",
-            "  +---+\n  O   |\n /|\\  |\n /    |\n     ===",
-            "  +---+\n  O   |\n /|\\  |\n / \\  |\n     ==="
+            "  +---+\n      O   |\n         |\n         |\n     ===",
+            "  +---+\n      O   |\n     |   |\n         |\n     ===",
+            "  +---+\n      O   |\n    /|      |\n         |\n     ===",
+            "  +---+\n      O   |\n    /|\\     |\n         |\n     ===",
+            "  +---+\n      O   |\n    /|\\     |\n /       |\n     ===",
+            "  +---+\n      O   |\n    /|\\     |\n /    \\  |\n     ==="
     };
 
     // GUI Bileşenleri
     private final JLabel asciiArtLabel = new JLabel("<html>" + hangmanStages[0].replace("\n", "<br>") + "</html>");
-    private final JLabel wordLabel = new JLabel("Kelime: " + String.valueOf(guessedWord).replace('\0', '_'));
-    private final JLabel attemptsLabel = new JLabel("Kalan tahmin hakkı: " + attemptsLeft);
+    private final JLabel wordLabel = new JLabel();
+    private final JLabel attemptsLabel = new JLabel();
     private final JTextField inputField = new JTextField(5);
     private final JButton guessButton = new JButton("Tahmin Et");
     private final JLabel messageLabel = new JLabel("Bir harf giriniz.");
 
-    public HangmanGUI() {
+    public HangmanGUI(int difficulty) {
+        // Zorluk seviyesine göre haklar
+        switch (difficulty) {
+            case 1 -> attemptsLeft = 10; // Kolay
+            case 2 -> attemptsLeft = 7;  // Orta
+            case 3 -> attemptsLeft = 5;  // Zor
+        }
+
+        // Rastgele bir kelime seç
+        this.word = chooseRandomWord("C:\\Users\\semih\\IdeaProjects\\denemehang\\src\\kelimeler.txt").toUpperCase(new Locale("tr"));
+        this.guessedWord = new char[word.length()];
+
+        // Kelimeyi "_" ile başlat
+        for (int i = 0; i < guessedWord.length; i++) {
+            guessedWord[i] = '_';
+        }
+
         // Arayüzün Başlangıç Yapılandırması
         setTitle("Adam Asmaca");
         setSize(400, 400);
@@ -37,9 +57,8 @@ public class HangmanGUI extends JFrame {
         setLayout(new GridLayout(6, 1));
 
         // Başlangıç Kelimesini Hazırlama
-        for (int i = 0; i < guessedWord.length; i++) {
-            guessedWord[i] = '_';
-        }
+        wordLabel.setText("Kelime: " + String.valueOf(guessedWord));
+        attemptsLabel.setText("Kalan tahmin hakkı: " + attemptsLeft);
 
         // Bileşenleri Ekle
         add(asciiArtLabel);
@@ -78,7 +97,7 @@ public class HangmanGUI extends JFrame {
 
         // Harfi kontrol et
         for (int i = 0; i < word.length(); i++) {
-            if (word.toUpperCase(new Locale("tr")).charAt(i) == guess) {
+            if (word.charAt(i) == guess) {
                 guessedWord[i] = word.charAt(i);
                 correct = true;
             }
@@ -114,9 +133,37 @@ public class HangmanGUI extends JFrame {
         }
     }
 
+    private String chooseRandomWord(String filePath) {
+        try {
+            List<String> words = Files.readAllLines(Path.of(filePath));
+            Random random = new Random();
+            return words.get(random.nextInt(words.size()));
+        } catch (Exception e) {
+            throw new RuntimeException("Kelime dosyası okunamadı: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
+        // Kullanıcıdan zorluk seviyesini al
+        String[] options = {"Kolay", "Orta", "Zor"};
+        int difficulty = JOptionPane.showOptionDialog(
+                null,
+                "Zorluk seviyesini seçin:",
+                "Zorluk Seçimi",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (difficulty == -1) {
+            JOptionPane.showMessageDialog(null, "Oyun iptal edildi.");
+            System.exit(0);
+        }
+
         SwingUtilities.invokeLater(() -> {
-            HangmanGUI game = new HangmanGUI();
+            HangmanGUI game = new HangmanGUI(difficulty + 1); // Kolay: 1, Orta: 2, Zor: 3
             game.setVisible(true);
         });
     }
