@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -107,7 +109,7 @@ public class AdamAsmacaSwingGame {
     private String rastgeleKelimeSec() throws IOException {
         List<String> kelimeler = new ArrayList<>();
         try (BufferedReader reader = Files.newBufferedReader(Path.of("kelimeler.txt"))) {
-            kelimeler = reader.lines().collect(Collectors.toList());
+            kelimeler = reader.lines().toList();
         }
         if (kelimeler.isEmpty()) {
             throw new IOException("Kelime dosyası boş. Lütfen kelimeler ekleyin.");
@@ -186,7 +188,27 @@ public class AdamAsmacaSwingGame {
                 ex.printStackTrace();
             }
         }
+        private void oyunuYenidenBaslat() {
+            try {
+                // Yeni kelime seç ve ayarları sıfırla
+                String kelime = rastgeleKelimeSec();
+                oyun = new KelimeOyunu(kelime, oyun.getMaxTahminSayisi());
+                kalanHak = oyun.getMaxTahminSayisi();
+                baslangicZamani = Instant.now();
 
+                // Arayüzü sıfırla
+                kelimeLabel.setText("Tahmin Edilecek Kelime: " + oyun.getTahminEdilen());
+                kalanHakLabel.setText("Kalan Hak: " + kalanHak);
+                mesajLabel.setText("");
+                cizimLabel.setText(asciiArt[0]);
+                tahminField.setEnabled(true);
+                tahminField.setText("");
+                tahminButton.setEnabled(true);
+            } catch (IOException ex) {
+                mesajLabel.setText("Oyun yeniden başlatılamadı: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
         private void bitirOyun(boolean kazandi) {
             tahminField.setEnabled(false);
             tahminButton.setEnabled(false);
@@ -197,12 +219,23 @@ public class AdamAsmacaSwingGame {
                 if (kazandi) {
                     mesajLabel.setText("Tebrikler! Kelimeyi bildiniz.");
                     skorTahtasi.skorArtir(puan);
+                    skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
+                    JOptionPane.showMessageDialog(frame, "Kazandınız! Skorunuz kaydedildi.\nSkorunuz: "+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.PLAIN_MESSAGE);
                 } else {
                     mesajLabel.setText("Üzgünüm, kelime: " + oyun.getGizliKelime());
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
+                    skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
+                    JOptionPane.showMessageDialog(frame, "Kaybettiniz! Skorunuz kaydedildi.\nSkorunuz:"+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.ERROR_MESSAGE);
+}
+
+                // Tekrar oynamak ister misiniz?
+                int secim = JOptionPane.showConfirmDialog(frame, "Tekrar oynamak ister misiniz?", "Oyun Bitti", JOptionPane.YES_NO_OPTION);
+
+                if (secim == JOptionPane.YES_OPTION) {
+                    oyunuYenidenBaslat();
+                } else {
+                    frame.dispose(); // Pencereyi kapat
                 }
-                skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
-                JOptionPane.showMessageDialog(frame, "Oyun bitti! Skorunuz kaydedildi.","Bilgilendirme",JOptionPane.PLAIN_MESSAGE);
             } catch (IOException ex) {
                 mesajLabel.setText("Skor kaydı sırasında hata oluştu.");
                 ex.printStackTrace();
