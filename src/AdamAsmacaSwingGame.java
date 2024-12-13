@@ -17,6 +17,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AdamAsmacaSwingGame {
+    private JLabel oyuncuAdiLabel;
+    private JLabel kullanilanHarflerLabel;
+    private StringBuilder kullanilanHarfler;
     private JFrame frame;
     private JLabel kelimeLabel, kalanHakLabel, mesajLabel, sureLabel, cizimLabel;
     private JTextField tahminField;
@@ -71,7 +74,9 @@ public class AdamAsmacaSwingGame {
         frame = new JFrame("Adam Asmaca");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(7, 1));
-
+        oyuncuAdiLabel = new JLabel("Oyuncu: " + oyuncuIsmi, JLabel.CENTER);
+        kullanilanHarflerLabel = new JLabel("Kullanılan Harfler: ", JLabel.CENTER);
+        kullanilanHarfler = new StringBuilder();
         kelimeLabel = new JLabel("Tahmin Edilecek Kelime: " + oyun.getTahminEdilen(), JLabel.CENTER);
         kalanHakLabel = new JLabel("Kalan Hak: " + kalanHak, JLabel.CENTER);
         mesajLabel = new JLabel("", JLabel.CENTER);
@@ -88,7 +93,8 @@ public class AdamAsmacaSwingGame {
                 tahminButton.doClick(); // Enter tuşuna basıldığında butonun işlevi tetiklenir
             }
         });
-
+        frame.add(oyuncuAdiLabel);
+        frame.add(kullanilanHarflerLabel);
         frame.add(kelimeLabel);
         frame.add(kalanHakLabel);
         frame.add(cizimLabel);
@@ -167,7 +173,10 @@ public class AdamAsmacaSwingGame {
                 if (tahmin.length() == 1) {
                     char harf = tahmin.charAt(0);
 
-                    if (oyun.tahminYap(harf)) {
+                    if (!kullanilanHarfler.toString().contains(String.valueOf(harf))) {
+                        kullanilanHarfler.append(harf).append(" ");
+                        kullanilanHarflerLabel.setText("Kullanılan Harfler: " + kullanilanHarfler.toString());
+                    }    if (oyun.tahminYap(harf)) {
                         kelimeLabel.setText("Tahmin Edilecek Kelime: " + oyun.getTahminEdilen());
                         mesajLabel.setText("Doğru tahmin!");
                     } else {
@@ -176,7 +185,7 @@ public class AdamAsmacaSwingGame {
                         mesajLabel.setText("Yanlış tahmin!");
                         cizimLabel.setText(asciiArt[Math.min(asciiArt.length - 1, oyun.getMaxTahminSayisi() - kalanHak)]);
                     }
-                } else {
+                }else {
                     if (tahmin.equalsIgnoreCase(oyun.getGizliKelime())) {
                         kelimeLabel.setText("Tahmin Edilecek Kelime: " + oyun.getGizliKelime());
                         bitirOyun(true);
@@ -203,6 +212,8 @@ public class AdamAsmacaSwingGame {
         private void oyunuYenidenBaslat() {
             try {
                 // Zorluk seviyesini yeniden seçtir
+                kullanilanHarfler.setLength(0); // Harfleri sıfırlar
+                kullanilanHarflerLabel.setText("Kullanılan Harfler: ");
                 String[] zorluklar = {"Kolay", "Orta", "Zor"};
                 String zorluk = (String) JOptionPane.showInputDialog(frame, "Zorluk seviyesini seçin:",
                         "Zorluk Seçimi", JOptionPane.QUESTION_MESSAGE, null, zorluklar, zorluklar[0]);
