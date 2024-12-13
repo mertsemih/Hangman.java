@@ -28,48 +28,12 @@ public class AdamAsmacaSwingGame {
     private int puan;
     private final String[] asciiArt = {
             "<html><pre>\n\n\n\n\n\n</pre></html>",
-
             "<html><pre>\n\n\n\n\n__________</pre></html>",
-
-            "<html><pre>   |\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "___|______</pre></html>",
-
-            "<html><pre>   _______\n" +
-                       "   |/   |\n" +
-                       "   |    O\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "___|______</pre></html>",
-
-            "<html><pre>   _______\n" +
-                       "   |/   |\n" +
-                       "   |    O\n" +
-                       "   |    |\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "___|______</pre></html>",
-
-            "<html><pre>   _______\n" +
-                       "   |/   |\n" +
-                       "   |    O\n" +
-                       "   |   /|\\\n" +
-                       "   |\n" +
-                       "   |\n" +
-                       "___|______</pre></html>",
-
-            "<html><pre>   _______\n" +
-                       "   |/   |\n" +
-                       "   |    O\n" +
-                       "   |   /|\\\n" +
-                       "   |   / \\\n" +
-                       "   |\n" +
-                       "___|______</pre></html>"
-
+            "<html><pre>   |\n   |\n   |\n   |\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |\n   |\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |    |\n   |\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |   / \\\n   |\n___|______</pre></html>"
     };
 
     public void startGame() throws IOException {
@@ -189,6 +153,9 @@ public class AdamAsmacaSwingGame {
                     return;
                 }
 
+                // Tahmin alanını temizle
+                tahminField.setText("");
+
                 if (tahmin.length() == 1) {
                     char harf = tahmin.charAt(0);
 
@@ -224,12 +191,35 @@ public class AdamAsmacaSwingGame {
                 ex.printStackTrace();
             }
         }
+
         private void oyunuYenidenBaslat() {
             try {
+                // Zorluk seviyesini yeniden seçtir
+                String[] zorluklar = {"Kolay", "Orta", "Zor"};
+                String zorluk = (String) JOptionPane.showInputDialog(frame, "Zorluk seviyesini seçin:",
+                        "Zorluk Seçimi", JOptionPane.QUESTION_MESSAGE, null, zorluklar, zorluklar[0]);
+                if (zorluk == null) {
+                    JOptionPane.showMessageDialog(frame, "Zorluk seçimi yapılmadı. Oyun kapatılıyor.", "Bilgilendirme", JOptionPane.ERROR_MESSAGE);
+                    frame.dispose();
+                    return;
+                }
+
+                // Zorluk seviyesine göre tahmin haklarını ve puanı ayarla
+                int maxHak = switch (zorluk) {
+                    case "Kolay" -> 6;
+                    case "Orta" -> 4;
+                    default -> 2;
+                };
+                puan = switch (zorluk) {
+                    case "Kolay" -> 10;
+                    case "Orta" -> 20;
+                    default -> 30;
+                };
+
                 // Yeni kelime seç ve ayarları sıfırla
                 String kelime = rastgeleKelimeSec();
-                oyun = new KelimeOyunu(kelime, oyun.getMaxTahminSayisi());
-                kalanHak = oyun.getMaxTahminSayisi();
+                oyun = new KelimeOyunu(kelime, maxHak);
+                kalanHak = maxHak;
                 baslangicZamani = Instant.now();
 
                 // Arayüzü sıfırla
@@ -245,6 +235,7 @@ public class AdamAsmacaSwingGame {
                 ex.printStackTrace();
             }
         }
+
         private void bitirOyun(boolean kazandi) {
             tahminField.setEnabled(false);
             tahminButton.setEnabled(false);
@@ -262,7 +253,7 @@ public class AdamAsmacaSwingGame {
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
                     skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
                     JOptionPane.showMessageDialog(frame, "Kaybettiniz! Skorunuz kaydedildi.\nSkorunuz:"+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.ERROR_MESSAGE);
-                }
+}
 
                 // Tekrar oynamak ister misiniz?
                 int secim = JOptionPane.showConfirmDialog(frame, "Tekrar oynamak ister misiniz?", "Oyun Bitti", JOptionPane.YES_NO_OPTION);
