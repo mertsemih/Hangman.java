@@ -78,10 +78,16 @@ public class AdamAsmacaSwingGame {
         sureLabel = new JLabel("", JLabel.CENTER);
         cizimLabel = new JLabel(asciiArt[0], JLabel.CENTER);
         tahminField = new JTextField();
-        tahminField.setFont(new Font("Arial", Font.PLAIN, 18));
+        tahminField.setFont(new Font("Arial", Font.PLAIN, 25));
         tahminButton = new JButton("Tahmin Yap");
 
         tahminButton.addActionListener(new TahminDinleyici(oyuncuIsmi));
+        tahminField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tahminButton.doClick(); // Enter tuşuna basıldığında butonun işlevi tetiklenir
+            }
+        });
 
         frame.add(kelimeLabel);
         frame.add(kalanHakLabel);
@@ -155,6 +161,8 @@ public class AdamAsmacaSwingGame {
 
                 // Tahmin alanını temizle
                 tahminField.setText("");
+                tahminField.requestFocus();
+                tahminButton.doClick();
 
                 if (tahmin.length() == 1) {
                     char harf = tahmin.charAt(0);
