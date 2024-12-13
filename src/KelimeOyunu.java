@@ -13,14 +13,22 @@ class KelimeOyunu extends Oyun {
     }
 
     public String getTahminEdilen() {
-        return tahminEdilen.toString();
+        StringBuilder gorunum = new StringBuilder();
+        for (int i = 0; i < gizliKelime.length(); i++) {
+            if (tahminEdilen.charAt(i) != '_') {
+                gorunum.append(tahminEdilen.charAt(i));
+            } else {
+                gorunum.append(" _ ");
+            }
+        }
+        return gorunum.toString().trim();
     }
 
     public boolean tahminYap(char harf) {
         boolean dogruTahmin = false;
         for (int i = 0; i < gizliKelime.length(); i++) {
-            if (Character.toLowerCase(gizliKelime.charAt(i)) == Character.toLowerCase(harf)) {
-                tahminEdilen.setCharAt(i, gizliKelime.charAt(i));
+            if (gizliKelime.charAt(i) == harf) {
+                tahminEdilen.setCharAt(i, harf);
                 dogruTahmin = true;
             }
         }
