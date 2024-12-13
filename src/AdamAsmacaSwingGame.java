@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +7,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -204,7 +202,7 @@ public class AdamAsmacaSwingGame {
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
                 }
                 skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
-                JOptionPane.showMessageDialog(frame, "Oyun bitti! Skorunuz kaydedildi.","Bilgilendirme",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Oyun bitti! Skorunuz kaydedildi.","Bilgilendirme",JOptionPane.PLAIN_MESSAGE);
             } catch (IOException ex) {
                 mesajLabel.setText("Skor kaydı sırasında hata oluştu.");
                 ex.printStackTrace();
