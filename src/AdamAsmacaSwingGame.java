@@ -21,7 +21,7 @@ public class AdamAsmacaSwingGame {
     private JLabel kullanilanHarflerLabel;
     private StringBuilder kullanilanHarfler;
     private JFrame frame;
-    private JLabel kelimeLabel, kalanHakLabel, mesajLabel, sureLabel, cizimLabel;
+    private JLabel kelimeLabel, kalanHakLabel, mesajLabel, sureLabel, cizimLabel,boslukLabel,boslukLabel1,boslukLabel2;
     private JTextField tahminField;
     private JButton tahminButton;
     private KelimeOyunu oyun;
@@ -82,10 +82,23 @@ public class AdamAsmacaSwingGame {
         mesajLabel = new JLabel("", JLabel.CENTER);
         sureLabel = new JLabel("", JLabel.CENTER);
         cizimLabel = new JLabel(asciiArt[0], JLabel.CENTER);
+        boslukLabel = new JLabel("", JLabel.CENTER);
+        boslukLabel1 = new JLabel("", JLabel.CENTER);
+        boslukLabel2 = new JLabel("", JLabel.CENTER);
         tahminField = new JTextField();
         tahminField.setFont(new Font("Arial", Font.PLAIN, 25));
         tahminButton = new JButton("Tahmin Yap");
+        kelimeLabel.setFont(new Font("Arial", Font.BOLD, 30)); // Daha büyük bir yazı tipi
+        tahminField.setPreferredSize(new Dimension(50, 20)); // Geniş bir tahmin alanı
+        tahminField.setFont(new Font("Arial", Font.PLAIN, 30)); // Tahmin alanındaki yazı büyük
+        oyuncuAdiLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        cizimLabel.setFont(new Font("Arial", Font.BOLD, 10));
+        kullanilanHarflerLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        kalanHakLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        mesajLabel.setFont(new Font("Arial", Font.BOLD, 40));
 
+       // Tahmin butonunu genişlet
+        tahminButton.setPreferredSize(new Dimension(200, 50));
         tahminButton.addActionListener(new TahminDinleyici(oyuncuIsmi));
         tahminField.addActionListener(new ActionListener() {
             @Override
@@ -93,11 +106,15 @@ public class AdamAsmacaSwingGame {
                 tahminButton.doClick(); // Enter tuşuna basıldığında butonun işlevi tetiklenir
             }
         });
+
         frame.add(oyuncuAdiLabel);
         frame.add(kullanilanHarflerLabel);
         frame.add(kelimeLabel);
         frame.add(kalanHakLabel);
         frame.add(cizimLabel);
+        frame.add(boslukLabel);
+        frame.add(boslukLabel1);
+        frame.add(boslukLabel2);
         frame.add(tahminField);
         frame.add(tahminButton);
         frame.add(mesajLabel);
