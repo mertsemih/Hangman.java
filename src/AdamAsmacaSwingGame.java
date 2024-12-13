@@ -28,12 +28,48 @@ public class AdamAsmacaSwingGame {
     private int puan;
     private final String[] asciiArt = {
             "<html><pre>\n\n\n\n\n\n</pre></html>",
+
             "<html><pre>\n\n\n\n\n__________</pre></html>",
-            "<html><pre>   |\n   |\n   |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |    |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |   / \\\n   |\n___|______</pre></html>"
+
+            "<html><pre>   |\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "___|______</pre></html>",
+
+            "<html><pre>   _______\n" +
+                       "   |/   |\n" +
+                       "   |    O\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "___|______</pre></html>",
+
+            "<html><pre>   _______\n" +
+                       "   |/   |\n" +
+                       "   |    O\n" +
+                       "   |    |\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "___|______</pre></html>",
+
+            "<html><pre>   _______\n" +
+                       "   |/   |\n" +
+                       "   |    O\n" +
+                       "   |   /|\\\n" +
+                       "   |\n" +
+                       "   |\n" +
+                       "___|______</pre></html>",
+
+            "<html><pre>   _______\n" +
+                       "   |/   |\n" +
+                       "   |    O\n" +
+                       "   |   /|\\\n" +
+                       "   |   / \\\n" +
+                       "   |\n" +
+                       "___|______</pre></html>"
+
     };
 
     public void startGame() throws IOException {
@@ -226,7 +262,7 @@ public class AdamAsmacaSwingGame {
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
                     skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
                     JOptionPane.showMessageDialog(frame, "Kaybettiniz! Skorunuz kaydedildi.\nSkorunuz:"+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.ERROR_MESSAGE);
-}
+                }
 
                 // Tekrar oynamak ister misiniz?
                 int secim = JOptionPane.showConfirmDialog(frame, "Tekrar oynamak ister misiniz?", "Oyun Bitti", JOptionPane.YES_NO_OPTION);
