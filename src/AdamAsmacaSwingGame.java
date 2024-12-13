@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,9 +38,9 @@ public class AdamAsmacaSwingGame {
 
     public void startGame() throws IOException {
         ensureKelimeDosyasi();
-        String oyuncuIsmi = JOptionPane.showInputDialog("Lütfen isminizi girin:");
+        String oyuncuIsmi = JOptionPane.showInputDialog(null,"Lütfen isminizi girin:","Giriş",JOptionPane.QUESTION_MESSAGE);
         if (oyuncuIsmi == null || oyuncuIsmi.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Oyuncu ismi gerekli. Oyun kapatılıyor.");
+            JOptionPane.showMessageDialog(null, "Oyuncu ismi gerekli. Oyun kapatılıyor.","Bilgilendirme",JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
 
@@ -47,7 +48,7 @@ public class AdamAsmacaSwingGame {
         String zorluk = (String) JOptionPane.showInputDialog(null, "Zorluk seviyesini seçin:",
                 "Zorluk Seçimi", JOptionPane.QUESTION_MESSAGE, null, zorluklar, zorluklar[0]);
         if (zorluk == null) {
-            JOptionPane.showMessageDialog(null, "Zorluk seçimi yapılmadı. Oyun kapatılıyor.");
+            JOptionPane.showMessageDialog(null, "Zorluk seçimi yapılmadı. Oyun kapatılıyor.","Bilgilendirme",JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
 
@@ -203,7 +204,7 @@ public class AdamAsmacaSwingGame {
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
                 }
                 skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
-                JOptionPane.showMessageDialog(frame, "Oyun bitti! Skorunuz kaydedildi.");
+                JOptionPane.showMessageDialog(frame, "Oyun bitti! Skorunuz kaydedildi.","Bilgilendirme",JOptionPane.ERROR_MESSAGE);
             } catch (IOException ex) {
                 mesajLabel.setText("Skor kaydı sırasında hata oluştu.");
                 ex.printStackTrace();
