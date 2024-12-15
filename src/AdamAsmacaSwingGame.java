@@ -32,11 +32,11 @@ public class AdamAsmacaSwingGame {
     private final String[] asciiArt = {
             "<html><pre>\n\n\n\n\n\n</pre></html>",
             "<html><pre>\n\n\n\n\n__________</pre></html>",
-            "<html><pre>   |\n   |\n   |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |    |\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |\n   |\n___|______</pre></html>",
-            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\\\n   |   / \\\n   |\n___|______</pre></html>"
+            "<html><pre>   |\n   |\n   |\n   |\n   |\n   |\n   |\n   |________</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\n   |   / \n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\n   |   / \\\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\n   |   / \\\n   |\n___|______</pre></html>",
+            "<html><pre>   _______\n   |/   |\n   |    O\n   |   /|\n   |   / \\\n   |_____\n___|______</pre></html>"
     };
 
     public void startGame() throws IOException {
@@ -92,12 +92,12 @@ public class AdamAsmacaSwingGame {
         tahminField.setPreferredSize(new Dimension(50, 20)); // Geniş bir tahmin alanı
         tahminField.setFont(new Font("Arial", Font.PLAIN, 30)); // Tahmin alanındaki yazı büyük
         oyuncuAdiLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        cizimLabel.setFont(new Font("Arial", Font.BOLD, 10));
         kullanilanHarflerLabel.setFont(new Font("Arial", Font.BOLD, 40));
         kalanHakLabel.setFont(new Font("Arial", Font.BOLD, 40));
         mesajLabel.setFont(new Font("Arial", Font.BOLD, 40));
 
        // Tahmin butonunu genişlet
+        cizimLabel.setPreferredSize(new Dimension(200, 60));
         tahminButton.setPreferredSize(new Dimension(200, 50));
         tahminButton.addActionListener(new TahminDinleyici(oyuncuIsmi));
         tahminField.addActionListener(new ActionListener() {
@@ -275,24 +275,32 @@ public class AdamAsmacaSwingGame {
         private void bitirOyun(boolean kazandi) {
             tahminField.setEnabled(false);
             tahminButton.setEnabled(false);
-            Instant bitisZamani = Instant.now();
-            Duration sure = Duration.between(baslangicZamani, bitisZamani);
+            Instant bitisZamani = Instant.now(); // Oyunun bittiği an
+            Duration sure = Duration.between(baslangicZamani, bitisZamani); // Toplam süre hesapla
 
             try {
+                String sureMetni = String.format("Geçen Süre: %d dakika %d saniye",
+                        sure.toMinutes(), sure.getSeconds() % 60); // Süreyi metne çevir
+
                 if (kazandi) {
                     mesajLabel.setText("Tebrikler! Kelimeyi bildiniz.");
                     skorTahtasi.skorArtir(puan);
                     skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
-                    JOptionPane.showMessageDialog(frame, "Kazandınız! Skorunuz kaydedildi.\nSkorunuz: "+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Kazandınız! Skorunuz kaydedildi.\n" +
+                                    "Skorunuz: "+skorTahtasi.getSkor() + "\n" + sureMetni,
+                            "Bilgilendirme", JOptionPane.PLAIN_MESSAGE);
                 } else {
                     mesajLabel.setText("Üzgünüm, kelime: " + oyun.getGizliKelime());
                     cizimLabel.setText(asciiArt[asciiArt.length - 1]);
                     skorKaydet(oyuncuIsmi, skorTahtasi.getSkor(), sure);
-                    JOptionPane.showMessageDialog(frame, "Kaybettiniz! Skorunuz kaydedildi.\nSkorunuz:"+skorTahtasi.getSkor(),"Bilgilendirme",JOptionPane.ERROR_MESSAGE);
-}
+                    JOptionPane.showMessageDialog(frame, "Kaybettiniz! Skorunuz kaydedildi.\n" +
+                                    "Skorunuz: " + skorTahtasi.getSkor() + "\n" + sureMetni,
+                            "Bilgilendirme", JOptionPane.ERROR_MESSAGE);
+                }
 
                 // Tekrar oynamak ister misiniz?
-                int secim = JOptionPane.showConfirmDialog(frame, "Tekrar oynamak ister misiniz?", "Oyun Bitti", JOptionPane.YES_NO_OPTION);
+                int secim = JOptionPane.showConfirmDialog(frame, "Tekrar oynamak ister misiniz?",
+                        "Oyun Bitti", JOptionPane.YES_NO_OPTION);
 
                 if (secim == JOptionPane.YES_OPTION) {
                     oyunuYenidenBaslat();
@@ -304,5 +312,6 @@ public class AdamAsmacaSwingGame {
                 ex.printStackTrace();
             }
         }
+
     }
 }
