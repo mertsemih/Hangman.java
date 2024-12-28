@@ -19,7 +19,7 @@ Bu proje, klasik Adam Asmaca oyununu Java dilinde geliştirilmiş bir sürümüd
 
 1. Bu projeyi indirin veya klonlayın:
    ```bash
-   git clone <https://github.com/mertsemih/OOPproje>
+   git clone <https://github.com/mertsemih/Hangman.java>
    ```
 2. Proje dosyalarını IDE'nize veya terminalinize yükleyin.
 
