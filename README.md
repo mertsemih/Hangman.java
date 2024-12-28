@@ -48,4 +48,4 @@ Aşağıda oyundan birkaç ekran görüntüsü bulunmaktadır:
 
 ![Kelime Tahmin Ekranı](images/oyun_ekrani.png)
 
-![Oyun Sonu Ekranı](images/oyun_sonu_ekranı.png)
+![Oyun Sonu Ekranı](images/oyun_sonu_ekrani.png)
