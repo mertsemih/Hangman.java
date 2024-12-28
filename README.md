@@ -19,7 +19,7 @@ Bu proje, klasik Adam Asmaca oyununu Java dilinde geliştirilmiş bir sürümüd
 
 1. Bu projeyi indirin veya klonlayın:
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/mertsemih/OOPproje>
    ```
 2. Proje dosyalarını IDE'nize veya terminalinize yükleyin.
 
@@ -42,8 +42,10 @@ Bu proje, klasik Adam Asmaca oyununu Java dilinde geliştirilmiş bir sürümüd
 
 Aşağıda oyundan birkaç ekran görüntüsü bulunmaktadır:
 
-![Oyun Başlangıç Ekranı](images/start_screen.png)
+![Oyun Başlangıç Ekranı](images/giris_ekrani.png)
 
-![Kelime Tahmin Ekranı](images/guess_screen.png)
+![Zorluk Seçim Ekranı](images/zorluk_secim_ekrani.png)
 
-![Oyun Sonu Ekranı](images/game_over_screen.png)
+![Kelime Tahmin Ekranı](images/oyun_ekrani.png)
+
+![Oyun Sonu Ekranı](images/oyun_sonu_ekranı.png)
